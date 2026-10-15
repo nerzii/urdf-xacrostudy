@@ -1,0 +1,107 @@
+<?xml version="1.0" ?>
+<!-- 根标签：机器人名字叫mbot -->
+<robot name="mbot">
+
+    <!-- 1. 底盘连杆（base_link）：机器人的基础，所有其他连杆都间接连到这里 -->
+    <link name="base_link">
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <!-- 底盘是圆柱体：长度0.16m（前后方向），半径0.20m（左右方向） -->
+                <cylinder length="0.16" radius="0.20"/>
+            </geometry>
+            <material name="yellow">
+                <color rgba="1 0.4 0 1"/>  <!-- 黄色外观 -->
+            </material>
+        </visual>
+    </link>
+ 
+    <!-- 2. 左驱动轮关节（连接base_link和left_wheel_link） -->
+    <joint name="left_wheel_joint" type="continuous">
+        <!-- 轮子位置：x=0（前后居中），y=0.19（比底盘半径小0.01m，避免超出），z=-0.05（接触地面） -->
+        <origin xyz="0 0.19 -0.05" rpy="0 0 0"/>
+        <parent link="base_link"/>  <!-- 父连杆：底盘 -->
+        <child link="left_wheel_link"/>  <!-- 子连杆：左车轮 -->
+        <axis xyz="0 1 0"/>  <!-- 绕y轴旋转（前进方向） -->
+    </joint>
+ 
+    <!-- 3. 左驱动轮连杆（left_wheel_link） -->
+    <link name="left_wheel_link">
+        <visual>
+            <!-- rpy="1.5707 0 0"：绕x轴转90度（圆柱体立起来，变成轮子形状） -->
+            <origin xyz="0 0 0" rpy="1.5707 0 0" />
+            <geometry>
+                <!-- 轮子：半径0.06m（直径12cm），长度0.025m（轮子宽度） -->
+                <cylinder radius="0.06" length="0.025"/>
+            </geometry>
+            <material name="white">
+                <color rgba="1 1 1 0.9"/>  <!-- 白色外观 -->
+            </material>
+        </visual>
+    </link>
+ 
+    <!-- 4. 右驱动轮关节（和左轮对称，y=-0.19） -->
+    <joint name="right_wheel_joint" type="continuous">
+        <origin xyz="0 -0.19 -0.05" rpy="0 0 0"/>
+        <parent link="base_link"/>
+        <child link="right_wheel_link"/>
+        <axis xyz="0 1 0"/>  <!-- 同样绕y轴旋转 -->
+    </joint>
+ 
+    <!-- 5. 右驱动轮连杆（和左轮相同） -->
+    <link name="right_wheel_link">
+        <visual>
+            <origin xyz="0 0 0" rpy="1.5707 0 0" />
+            <geometry>
+                <cylinder radius="0.06" length="0.025"/>
+            </geometry>
+            <material name="white">
+                <color rgba="1 1 1 0.9"/>
+            </material>
+        </visual>
+    </link>
+ 
+    <!-- 6. 前万向轮关节（front_caster_joint，continuous类型，自由旋转） -->
+    <joint name="front_caster_joint" type="continuous">
+        <!-- 位置：x=0.18（底盘前端），y=0（左右居中），z=-0.095（比驱动轮低，接触地面） -->
+        <origin xyz="0.18 0 -0.095" rpy="0 0 0"/>
+        <parent link="base_link"/>
+        <child link="front_caster_link"/>
+        <axis xyz="0 1 0"/>  <!-- 绕y轴旋转（万向轮自由转向） -->
+    </joint>
+ 
+    <!-- 7. 前万向轮连杆（球体形状，半径0.015m） -->
+    <link name="front_caster_link">
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <sphere radius="0.015" />  <!-- 万向轮用球体表示 -->
+            </geometry>
+            <material name="black">
+                <color rgba="0 0 0 0.95"/>  <!-- 黑色外观 -->
+            </material>
+        </visual>
+    </link>
+ 
+    <!-- 8. 后万向轮关节（和前轮对称，x=-0.18） -->
+    <joint name="back_caster_joint" type="continuous">
+        <origin xyz="-0.18 0 -0.095" rpy="0 0 0"/>
+        <parent link="base_link"/>
+        <child link="back_caster_link"/>
+        <axis xyz="0 1 0"/>
+    </joint>
+ 
+    <!-- 9. 后万向轮连杆（和前轮相同） -->
+    <link name="back_caster_link">
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <sphere radius="0.015" />
+            </geometry>
+            <material name="black">
+                <color rgba="0 0 0 0.95"/>
+            </material>
+        </visual>
+    </link>
+ 
+</robot>
